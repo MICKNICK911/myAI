@@ -1,0 +1,9 @@
+# netlify.toml
+[build]
+  publish = "."  # Our static files are in the root
+  functions = "netlify/functions"  # Location of our serverless function
+
+[dev]
+  port = 8888  # Local dev port[citation:8]
+  publish = "."  # Serve files from the root
+  functions = "netlify/functions"  # Local functions directory[citation:8]

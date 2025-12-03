@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My AI Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-robot"></i> AI Assistant</h1>
+            <p>Ask me anything. Powered by OpenRouter.</p>
+        </header>
+
+        <main>
+            <div class="chat-container">
+                <div id="conversation" class="conversation">
+                    <!-- Messages will appear here -->
+                    <div class="message ai-message">
+                        <div class="avatar"><i class="fas fa-robot"></i></div>
+                        <div class="text">Hello! I'm your AI assistant. How can I help you today?</div>
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <form id="ai-form">
+                        <textarea 
+                            id="user-prompt" 
+                            placeholder="Type your question here..." 
+                            rows="3" 
+                            required
+                        ></textarea>
+                        <div class="form-footer">
+                            <button type="submit" id="submit-btn">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                            <button type="button" id="clear-btn" class="secondary">
+                                <i class="fas fa-trash"></i> Clear Chat
+                            </button>
+                        </div>
+                    </form>
+                    <div id="status" class="status"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Hosted on <a href="https://www.netlify.com/" target="_blank">Netlify</a> • 
+               API via <a href="https://openrouter.ai/" target="_blank">OpenRouter</a></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
