@@ -38,6 +38,10 @@ exports.handler = async (event) => {
     };
   }
 
+  // ========== GET MODEL NAME (NEW FLEXIBLE SETTING) ==========
+  // Get model from environment variable, default to the previously used one
+  const modelName = process.env.MODEL_NAME || 'deepseek/deepseek-chat:free';
+
   // ========== PARSE USER PROMPT ==========
   let userPrompt;
   try {
@@ -71,8 +75,9 @@ exports.handler = async (event) => {
 
   // ========== CALL DEEPSEEK VIA OPENROUTER ==========
   try {
+    console.log(`Attempting to call model: ${modelName}`); // This will appear in logs
     const completion = await openai.chat.completions.create({
-      model: 'deepseek/deepseek-chat:free',
+      model: modelName, // <-- Uses the configurable model name
       messages: [{ role: 'user', content: userPrompt }],
       max_tokens: 1024,
       temperature: 0.7,
@@ -99,17 +104,22 @@ exports.handler = async (event) => {
 
   } catch (error) {
     // ========== ERROR HANDLING ==========
-    console.error('OpenRouter/DeepSeek API Error:', error);
+    console.error('OpenRouter API Error:', error.message);
+    console.error('Model attempted:', modelName); // Log the failed model
 
     let userMessage = 'Sorry, the AI service is currently unavailable.';
-    if (error.response) {
+    
+    // Specific error for model not found
+    if (error.status === 404) {
+      userMessage = `The AI model "${modelName}" was not found. Please check the model name in your OpenRouter account.`;
+    } else if (error.response) {
       userMessage = `API Error: ${error.response.status}.`;
     } else if (error.request) {
       userMessage = 'Network error. Please check your connection.';
     }
 
     return {
-      statusCode: 502,
+      statusCode: error.status || 502,
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/json'
